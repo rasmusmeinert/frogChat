@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
+    "http": "^0.0.1-security",
     "socket.io": "^4.8.1"
   }
 }

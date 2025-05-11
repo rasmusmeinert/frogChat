@@ -1,7 +1,6 @@
 import { io } from "socket.io-client";
 let socket = io();
 
-
 //Setup HTMl Buttons with Functions
 const connectButton = document.querySelector("#connection-button") as HTMLElement;
 const sendButton = document.querySelector("#send-button") as HTMLElement;
@@ -38,3 +37,5 @@ function sendMessage() {
   let clientMessage = { message: "Hello!" }
   socket.emit("client-message", clientMessage);
 }
+
+

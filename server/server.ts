@@ -1,17 +1,17 @@
-import { Server, Socket } from "socket.io";
+import { createServer } from "http";
+import { Server } from "socket.io";
 
-const io = new Server({});
-
-io.on("connection", socket => {
-  console.log(`Connection established with ${socket.id}`);
-  socket.emit("hello-message");
-
+const httpServer = createServer();
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:8000"
+  }
 });
 
-io.on("client-message", e =>{
-  console.log(`Client message recieved: ${e.message}`)
-});
-
-console.log("Now listening on port 8010")
+io.on('connection', (socket) => {
+  console.log(`${socket.id} joined!`);
+})
 
 io.listen(8010);
+
+
