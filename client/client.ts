@@ -1,11 +1,12 @@
 import { io } from "socket.io-client";
 let socket = io();
 
+
 //Setup HTMl Buttons with Functions
 const connectButton = document.querySelector("#connection-button") as HTMLElement;
 const sendButton = document.querySelector("#send-button") as HTMLElement;
 
-sendButton.onclick = connectToServer;
+connectButton.onclick = connectToServer;
 sendButton.onclick = sendMessage;
 
 //Print a message on succesfull connection
@@ -22,7 +23,12 @@ socket.on("hello-message", () => {
 
 //Connect to localhost, if server is up
 function connectToServer() {
-  socket = io("http://localhost:8000");
+  console.log("Connecting to Server!");
+  socket = io("http://localhost:8010"), {
+    withCredentials: true,
+    extraHeaders: {
+    }
+  };
 
 }
 

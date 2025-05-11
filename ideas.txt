@@ -1,0 +1,13 @@
+Thought, Ideas and Ambitions for frogChat!
+
+I need to fix Cors errors
+
+Graphics:
+- Figure out how to do isometric 2D Graphics in HTML Canvas
+
+Server:
+- Should i totally seperate logic and representation, or do a sort of 50/50 split?
+
+
+
+
