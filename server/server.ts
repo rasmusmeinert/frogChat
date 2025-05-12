@@ -10,6 +10,8 @@ const io = new Server(httpServer, {
   }
 });
 
+const messageLog = { messages: [{}] };
+
 //On connection, console log socket id and send a welcome message
 io.on('connection', (socket) => {
   console.log(`${socket.id} joined!`);
@@ -18,7 +20,13 @@ io.on('connection', (socket) => {
 
   //Setup listening for client messages
   socket.on("client-message", (arg) => {
+    //Print the message
     console.log(`From client(${socket.id}): ${arg}`)
+    //Send back a list of messages sent to the server
+    let currentTime = new Date();
+    let message = {time: currentTime.toLocaleTimeString(), string: arg};
+    messageLog.messages.push(message);
+    socket.emit("server-message", messageLog);
   })
 })
 

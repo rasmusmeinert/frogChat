@@ -3,10 +3,10 @@ let socket = io();
 //Setup HTMl Buttons with Functions
 const connectButton = document.querySelector("#connection-button");
 const sendButton = document.querySelector("#send-button");
+const messageWindow = document.querySelector("#message-window");
 const textField = document.querySelector("#text-field");
 connectButton.onclick = connectToServer;
 sendButton.onclick = sendMessage;
-//Print a message on succesfull connection
 //Print a message, if the server sends a message back
 socket.on("server-message", () => {
     console.log("Hello from the server!");
@@ -18,21 +18,27 @@ function connectToServer() {
         withCredentials: true,
         extraHeaders: {}
     };
-    socket.on("hello", (arg) => {
-        console.log(`Message from server: ${arg}`);
+    socket.on("server-message", (arg) => {
+        let messages = arg.messages;
+        let html = [""];
+        messages.forEach((element) => {
+            html.push(`<p>[${element.time}]: ${element.string}</p>`);
+        });
+        messageWindow.innerHTML = html.join("");
     });
     //Setup socket behaviour, 
     socket.on("connect", () => {
         console.log("Connected!");
         const engine = socket.io.engine;
         //Check if websocket is correctly established
-        engine.once("upgrade", () => {
-            console.log(`My transport method is now: ${engine.transport.name} `);
-        });
+        // engine.once("upgrade", () => {
+        //   console.log(`My transport method is now: ${engine.transport.name} `)
+        // })
     });
 }
 //Send a message to the server
 function sendMessage() {
     console.log("Sending message");
     socket.emit("client-message", textField.value);
+    textField.value = "";
 }
