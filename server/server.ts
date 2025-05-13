@@ -10,20 +10,24 @@ const io = new Server(httpServer, {
   }
 });
 
-//Array containing all users
+//Setup array containing all users
 interface User {
   username: String,
   password: String
 }
+
 const users = [{ username: "Rasmus", password: "SA" }, { username: "Herluf", password: "H-bag" }]
 
 //Array containing all the messages sent to the server
 const messageLog = { messages: [{}] };
 
-//On connection, console log socket id and send a welcome message
+
+//Setup connection behaviour
 io.on('connection', (socket) => {
   console.log(`${socket.id} joined!`);
 
+
+  //Setup behaviour on login attempts
   let user: User;
   socket.on("login-message", (arg: User) => {
     console.log(`Client tried to log on with Username: ${arg.username} and Password: ${arg.password}`)
@@ -38,13 +42,8 @@ io.on('connection', (socket) => {
       socket.disconnect();
     }
   })
-
-
-
-
-
-
-  //Setup listening for client messages
+  
+  //If login sucessfull, setup listening for client messages
   socket.on("client-message", (arg) => {
     //Print the message
     console.log(`From client(${user.username})" ${arg}`)
