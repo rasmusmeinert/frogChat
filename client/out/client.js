@@ -4,6 +4,8 @@ let socket = io();
 const connectButton = document.querySelector("#connection-button");
 const sendButton = document.querySelector("#send-button");
 const messageWindow = document.querySelector("#message-window");
+const usernameTextField = document.querySelector("#username-text-field");
+const passwordTextField = document.querySelector("#password-text-field");
 const textField = document.querySelector("#text-field");
 connectButton.onclick = connectToServer;
 sendButton.onclick = sendMessage;
@@ -18,11 +20,19 @@ function connectToServer() {
         withCredentials: true,
         extraHeaders: {}
     };
-    socket.on("server-message", (arg) => {
+    let user = { username: usernameTextField.value, password: passwordTextField.value };
+    //Send login information to server
+    socket.emit("login-message", user);
+    //Print messages from server
+    socket.on("server-message", args => {
+        console.log(`From server: ${args}`);
+    });
+    //Print messages recieved from the server in html
+    socket.on("server-message-log", (arg) => {
         let messages = arg.messages;
         let html = [""];
         messages.forEach((element) => {
-            html.push(`<p>[${element.time}]: ${element.string}</p>`);
+            html.push(`<p>[${element.time}] ${element.username}: ${element.string}</p>`);
         });
         messageWindow.innerHTML = html.join("");
     });
